@@ -23,7 +23,8 @@ public class Product {
             convertedPromotion = promotion.getName();
         }
         if (quantity == 0) {
-            return String.format("- %s %s원 재고 없음%n", name, formatNumber(price));
+            return String.format("- %s %s원 재고 없음 %s%n",
+                name, formatNumber(price), convertedPromotion);
         }
         return String.format("- %s %s원 %d개 %s%n", name, formatNumber(price),
             quantity, convertedPromotion);
