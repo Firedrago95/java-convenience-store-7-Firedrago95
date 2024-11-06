@@ -14,4 +14,8 @@ public class StoreService {
         List<Product> convertedProducts = FileConverter.readProductsFile();
         products = new Products(convertedProducts);
     }
+
+    public String makeProductsStatus() {
+        return products.toString();
+    }
 }

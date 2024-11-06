@@ -10,5 +10,7 @@ public class StoreController {
     public void run() {
         OutputView.printWelcome();
         service.createProducts();
+
+        OutputView.printProducts(service.makeProductsStatus());
     }
 }

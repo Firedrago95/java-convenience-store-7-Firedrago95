@@ -16,5 +16,25 @@ public class Product {
         this.promotion = promotion;
     }
 
+    @Override
+    public String toString() {
+        String convertedPromotion = "";
+        if (promotion != null) {
+            convertedPromotion = promotion.getName();
+        }
+        return String.format("- %s %s원 %d개 %s%n", name, formatNumber(price),
+            quantity, convertedPromotion);
+    }
 
+    public boolean hasPromotion() {
+        return promotion != null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }
