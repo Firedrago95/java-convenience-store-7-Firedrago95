@@ -2,6 +2,7 @@ package store.domain;
 
 import static store.util.NumberFormatter.formatNumber;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Products {
@@ -35,5 +36,9 @@ public class Products {
         return products.stream()
             .filter(product -> product.getName().equals(name))
             .count() == 1;
+    }
+
+    public List<Product> getProducts() {
+        return Collections.unmodifiableList(products);
     }
 }
