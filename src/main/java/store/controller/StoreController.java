@@ -1,7 +1,9 @@
 package store.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import store.service.StoreService;
 import store.view.InputView;
 import store.view.OutputView;
@@ -25,6 +27,15 @@ public class StoreController {
             }
         }
         service.addCount(filteredLessCountOrders);
+//
+//        Map<String, Integer> exceedCountOrders = service.getExceedCountOrders();
+//        Map<String, Integer> filteredExceedCountOrders = new HashMap<>();
+//        for (String name : exceedCountOrders.keySet()) {
+//            if (!readSubstractCount(name, exceedCountOrders.get(name))) {
+//                filteredExceedCountOrders.put(name, exceedCountOrders.get(name));
+//            }
+//        }
+//        service.substractCount(filteredExceedCountOrders);
     }
 
     private void createOrder() {

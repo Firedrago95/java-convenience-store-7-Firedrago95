@@ -1,7 +1,7 @@
 package store.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,9 +31,9 @@ public class Order {
     private void makeLessCount(List<Product> products, List<String> lessCount, String orderName) {
         int count = order.get(orderName);
         boolean isEligibleForPromotion = products.stream()
-            .anyMatch(product -> product.getName().equals(orderName) &&
-                count + 1 <= product.getQuantity() &&
-                count % (product.getPromotionBuy() + product.getPromotionGet())
+            .anyMatch(product -> product.getName().equals(orderName)
+                && count + 1 <= product.getQuantity()
+                && count % (product.getPromotionBuy() + product.getPromotionGet())
                     == product.getPromotionBuy());
         if (isEligibleForPromotion) {
             lessCount.add(orderName);
@@ -44,6 +44,37 @@ public class Order {
         filteredLessCountOrders.stream()
             .forEach(f ->{
                 order.put(f, order.get(f) + 1);
+            });
+    }
+
+    public Map<String, Integer> getExceedCountOrders(List<Product> products) {
+        Map<String, Integer> exceedCount = new HashMap<>();
+        for (String orderName : getOrderNames()) {
+            int count = order.get(orderName);
+            boolean isEligible = checkExceedCount(products, orderName, count);
+            if (isEligible) {
+                calculateExceedCount(products, exceedCount, orderName, count);
+            }
+        }
+        return exceedCount;
+    }
+
+    private static boolean checkExceedCount(List<Product> products, String orderName, int count) {
+        boolean isEligible = products.stream()
+            .anyMatch(product -> product.getName().equals(orderName)
+                && count > product.getQuantity());
+        return isEligible;
+    }
+
+    private static void calculateExceedCount(List<Product> products, Map<String, Integer> exceedCount,
+        String orderName, int count) {
+        products.stream()
+            .filter(product -> product.getName().equals(orderName))
+            .forEach(product -> {
+                int promotionUnit = product.getPromotionBuy() + product.getPromotionGet();
+                int eligibleForPromotion = product.getQuantity() - (product.getQuantity() % promotionUnit);
+                int calculatedCount = count - eligibleForPromotion;
+                exceedCount.put(orderName, calculatedCount);
             });
     }
 }

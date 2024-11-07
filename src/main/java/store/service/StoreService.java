@@ -36,4 +36,10 @@ public class StoreService {
     public void addCount(List<String> filteredLessCountOrders) {
         order.addCount(filteredLessCountOrders);
     }
+
+    public Map<String, Integer> getExceedCountOrders() {
+        List<Product> availableProduct
+            = products.findAvailableProduct(order.getOrderNames(),  DateTimes.now());
+        return order.getExceedCountOrders(availableProduct);
+    }
 }
