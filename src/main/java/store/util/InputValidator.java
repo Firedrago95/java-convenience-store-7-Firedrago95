@@ -21,13 +21,13 @@ public class InputValidator {
 
     private static void checkEmpty(String input) {
         if (input.isBlank()) {
-            throw new IllegalArgumentException("[ERROR] 주문을 입력해주세요.");
+            throw new IllegalArgumentException("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
         }
     }
 
     private static void checkOrderForm(String input) {
         if (!input.matches(ORDER_REGEX)) {
-            throw new IllegalArgumentException("[ERROR] 잘못된 주문 형식입니다.");
+            throw new IllegalArgumentException("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
         }
     }
 
@@ -38,7 +38,7 @@ public class InputValidator {
         while (matcher.find()) {
             String name = matcher.group();
             if (!names.add(name)) {
-                throw new IllegalArgumentException("[ERROR] 중복 물건을 주문 하셨습니다.");
+                throw new IllegalArgumentException("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
             }
         }
     }
@@ -49,7 +49,7 @@ public class InputValidator {
         while (matcher.find()) {
             int count = Integer.parseInt(matcher.group());
             if (count == 0) {
-                throw new IllegalArgumentException("[ERROR] 0개를 주문 할 수 없습니다.");
+                throw new IllegalArgumentException("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
             }
         }
     }
@@ -61,7 +61,7 @@ public class InputValidator {
 
     private static void checkYesOrNo(String input) {
         if (!input.matches(YES_NO_REGEX)) {
-            throw new IllegalArgumentException("[ERROR] Y 또는 N만 입력해주세요");
+            throw new IllegalArgumentException("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
         }
     }
 }
