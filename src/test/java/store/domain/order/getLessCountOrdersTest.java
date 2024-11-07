@@ -13,10 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import store.domain.Order;
 import store.domain.Product;
-import store.domain.Products;
 import store.domain.Promotion;
 
-public class getLessCountOrdersTest {
+public class GetLessCountOrdersTest {
     private List<Product> products;
     private Order order;
 
