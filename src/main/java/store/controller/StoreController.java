@@ -13,29 +13,47 @@ public class StoreController {
     private StoreService service = new StoreService();
 
     public void run() {
-        OutputView.printWelcome();
+        boolean reBuy = true;
         service.createProducts();
+        while (reBuy) {
+            OutputView.printWelcome();
 
-        OutputView.printProducts(service.makeProductsStatus());
-        createOrder();
+            OutputView.printProducts(service.makeProductsStatus());
+            createOrder();
 
-        List<String> lessCountOrders = service.getLessCountOrders();
-        List<String> filteredLessCountOrders = new ArrayList<>();
-        for (String lessCountOrder : lessCountOrders) {
-            if (readAddCount(lessCountOrder)) {
-                filteredLessCountOrders.add(lessCountOrder);
+            List<String> lessCountOrders = service.getLessCountOrders();
+            List<String> filteredLessCountOrders = new ArrayList<>();
+            for (String lessCountOrder : lessCountOrders) {
+                if (readAddCount(lessCountOrder)) {
+                    filteredLessCountOrders.add(lessCountOrder);
+                }
             }
-        }
-        service.addCount(filteredLessCountOrders);
+            service.addCount(filteredLessCountOrders);
 
-        Map<String, Integer> exceedCountOrders = service.getExceedCountOrders();
-        Map<String, Integer> filteredExceedCountOrders = new HashMap<>();
-        for (String name : exceedCountOrders.keySet()) {
-            if (!readSubstractCount(name, exceedCountOrders.get(name))) {
-                filteredExceedCountOrders.put(name, exceedCountOrders.get(name));
+            Map<String, Integer> exceedCountOrders = service.getExceedCountOrders();
+            Map<String, Integer> filteredExceedCountOrders = new HashMap<>();
+            for (String name : exceedCountOrders.keySet()) {
+                if (!readSubtractCount(name, exceedCountOrders.get(name))) {
+                    filteredExceedCountOrders.put(name, exceedCountOrders.get(name));
+                }
             }
+            service.substractCount(filteredExceedCountOrders);
+
+
+            String receipt = service.makeReceipt(isAskForMemberShip());
+            OutputView.printReceipt(receipt);
+            service.changeQuantity();
+            reBuy = askForRepurchase();
         }
-        service.substractCount(filteredExceedCountOrders);
+    }
+
+    private static boolean askForRepurchase() {
+        try {
+            return InputView.askForRepurchase();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return askForRepurchase();
+        }
     }
 
     private void createOrder() {
@@ -56,12 +74,21 @@ public class StoreController {
         }
     }
 
-    private boolean readSubstractCount(String name, Integer count) {
+    private boolean readSubtractCount(String name, Integer count) {
         try {
-            return InputView.readSubStractCount(name, count);
+            return InputView.readSubtractCount(name, count);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
-            return readSubstractCount(name, count);
+            return readSubtractCount(name, count);
+        }
+    }
+
+    private static boolean isAskForMemberShip() {
+        try {
+            return InputView.askForMemberShip();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return isAskForMemberShip();
         }
     }
 }

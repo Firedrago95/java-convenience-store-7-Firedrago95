@@ -18,7 +18,7 @@ public class OrderValidator {
             boolean hasProduct = products.stream()
                 .anyMatch(product -> product.getName().equals(name));
             if (!hasProduct) {
-                throw new IllegalArgumentException("[ERROR] 존재하지 않는 물건을 주문하셨습니다");
+                throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
             }
         }
     }
