@@ -59,4 +59,8 @@ public class Product {
     public int getPromotionGet() {
         return promotion.getGet();
     }
+
+    public void decreaseQuantity(Integer count) {
+        this.quantity = Math.max(quantity - count, 0);
+    }
 }

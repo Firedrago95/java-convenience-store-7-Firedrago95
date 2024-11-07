@@ -46,4 +46,8 @@ public class StoreService {
     public void substractCount(Map<String, Integer> orders) {
         order.substractCount(orders);
     }
+
+    public void changeQuantity() {
+        products.changeQuantity(order.getOrder());
+    }
 }

@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Products {
 
@@ -55,5 +57,57 @@ public class Products {
                 .forEach(product -> availableProduct.add(product));
         }
         return availableProduct;
+    }
+
+    public void changeQuantity(Map<String, Integer> order) {
+        for (String name : order.keySet()) {
+            int decrease = order.get(name);
+            List<Product> filteredProducts = countProduct(name);
+            if (oneSizeProductChangeQuantity(decrease, filteredProducts)) {
+                return;
+            }
+            twoSizeProductsChangeQuantity(decrease, filteredProducts);
+        }
+    }
+
+    private List<Product> countProduct(String name) {
+        List<Product> filteredProducts = products.stream()
+            .filter(product -> product.getName().equals(name))
+            .collect(Collectors.toList());
+        return filteredProducts;
+    }
+
+    private static boolean oneSizeProductChangeQuantity(int decrease, List<Product> filteredProducts) {
+        if (filteredProducts.size() == 1) {
+            Product uniqueProduct = filteredProducts.get(0);
+            uniqueProduct.decreaseQuantity(decrease);
+            return true;
+        }
+        return false;
+    }
+
+    private static void twoSizeProductsChangeQuantity(int decrease, List<Product> filteredProducts) {
+        int promotionQuantity = changePromotionProduct(decrease, filteredProducts);
+        decrease = Math.max(0, decrease - promotionQuantity);
+        changeNonPromotionProduct(decrease, filteredProducts);
+    }
+
+    private static int changePromotionProduct(int decrease, List<Product> filteredProducts) {
+        Product promotionProduct = filteredProducts.stream()
+            .filter(Product::hasPromotion)
+            .findFirst()
+            .get();
+
+        int promotionQuantity = promotionProduct.getQuantity();
+        promotionProduct.decreaseQuantity(decrease);
+        return promotionQuantity;
+    }
+
+    private static void changeNonPromotionProduct(int decrease, List<Product> filteredProducts) {
+        Product nonPromotionProduct = filteredProducts.stream()
+            .filter(product -> !product.hasPromotion())
+            .findFirst()
+            .get();
+        nonPromotionProduct.decreaseQuantity(decrease);
     }
 }
