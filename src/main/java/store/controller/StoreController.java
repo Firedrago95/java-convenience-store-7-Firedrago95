@@ -35,7 +35,7 @@ public class StoreController {
                 filteredExceedCountOrders.put(name, exceedCountOrders.get(name));
             }
         }
-//        service.substractCount(filteredExceedCountOrders);
+        service.substractCount(filteredExceedCountOrders);
     }
 
     private void createOrder() {

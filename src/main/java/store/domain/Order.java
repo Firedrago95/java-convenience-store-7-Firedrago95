@@ -1,6 +1,7 @@
 package store.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,5 +77,15 @@ public class Order {
                 int calculatedCount = count - eligibleForPromotion;
                 exceedCount.put(orderName, calculatedCount);
             });
+    }
+
+    public void substractCount(Map<String, Integer> filteredOrders) {
+        filteredOrders.forEach((name, count) -> {
+            order.put(name, order.get(name) - count);
+        });
+    }
+
+    public Map<String, Integer> getOrder() {
+        return Collections.unmodifiableMap(order);
     }
 }

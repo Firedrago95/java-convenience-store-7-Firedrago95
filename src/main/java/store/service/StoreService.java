@@ -42,4 +42,8 @@ public class StoreService {
             = products.findAvailableProduct(order.getOrderNames(),  DateTimes.now());
         return order.getExceedCountOrders(availableProduct);
     }
+
+    public void substractCount(Map<String, Integer> orders) {
+        order.substractCount(orders);
+    }
 }
