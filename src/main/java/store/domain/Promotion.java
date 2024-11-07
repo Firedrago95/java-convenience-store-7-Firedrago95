@@ -22,4 +22,17 @@ public class Promotion {
     public String getName() {
         return name;
     }
+
+    public int getBuy() {
+        return buy;
+    }
+
+    public int getGet() {
+        return get;
+    }
+
+    public boolean isPromotionTime(LocalDateTime time) {
+        return (time.isEqual(startDate) || time.isAfter(startDate))
+            && (time.isEqual(endDate) || time.isBefore(endDate));
+    }
 }

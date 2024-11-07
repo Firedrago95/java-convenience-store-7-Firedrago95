@@ -1,5 +1,6 @@
 package store.service;
 
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.util.List;
 import java.util.Map;
 import store.domain.Order;
@@ -24,5 +25,15 @@ public class StoreService {
 
     public void createOrder(Map<String, Integer> input) {
         order = new Order(input, products.getProducts());
+    }
+
+    public List<String> getLessCountOrders() {
+        List<Product> availableProduct
+            = products.findAvailableProduct(order.getOrderNames(),  DateTimes.now());
+        return order.getLessCountOrders(availableProduct);
+    }
+
+    public void addCount(List<String> filteredLessCountOrders) {
+        order.addCount(filteredLessCountOrders);
     }
 }

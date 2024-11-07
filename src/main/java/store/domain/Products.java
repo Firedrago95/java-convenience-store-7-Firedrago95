@@ -2,8 +2,11 @@ package store.domain;
 
 import static store.util.NumberFormatter.formatNumber;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class Products {
 
@@ -40,5 +43,17 @@ public class Products {
 
     public List<Product> getProducts() {
         return Collections.unmodifiableList(products);
+    }
+
+    public List<Product> findAvailableProduct(Set<String> orderNames, LocalDateTime now) {
+        List<Product> availableProduct = new ArrayList<>();
+        for (String orderName : orderNames) {
+            products.stream()
+                .filter(product -> product.getName().equals(orderName))
+                .filter(product -> product.hasPromotion())
+                .filter(product -> product.isPromotionTime(now))
+                .forEach(product -> availableProduct.add(product));
+        }
+        return availableProduct;
     }
 }

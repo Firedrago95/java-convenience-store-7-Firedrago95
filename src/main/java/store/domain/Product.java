@@ -2,6 +2,8 @@ package store.domain;
 
 import static store.util.NumberFormatter.formatNumber;
 
+import java.time.LocalDateTime;
+
 public class Product {
 
     private String name;
@@ -34,6 +36,10 @@ public class Product {
         return promotion != null;
     }
 
+    public boolean isPromotionTime(LocalDateTime time) {
+        return promotion.isPromotionTime(time);
+    }
+
     public String getName() {
         return name;
     }
@@ -44,5 +50,13 @@ public class Product {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public int getPromotionBuy() {
+        return promotion.getBuy();
+    }
+
+    public int getPromotionGet() {
+        return promotion.getGet();
     }
 }

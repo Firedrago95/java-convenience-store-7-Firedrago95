@@ -1,5 +1,7 @@
 package store.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import store.service.StoreService;
 import store.view.InputView;
 import store.view.OutputView;
@@ -14,6 +16,15 @@ public class StoreController {
 
         OutputView.printProducts(service.makeProductsStatus());
         createOrder();
+
+        List<String> lessCountOrders = service.getLessCountOrders();
+        List<String> filteredLessCountOrders = new ArrayList<>();
+        for (String lessCountOrder : lessCountOrders) {
+            if (readAddCount(lessCountOrder)) {
+                filteredLessCountOrders.add(lessCountOrder);
+            }
+        }
+        service.addCount(filteredLessCountOrders);
     }
 
     private void createOrder() {
@@ -22,6 +33,15 @@ public class StoreController {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             createOrder();
+        }
+    }
+
+    private static boolean readAddCount(String lessCountOrder) {
+        try {
+            return InputView.readAddCount(lessCountOrder);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return readAddCount(lessCountOrder);
         }
     }
 }
