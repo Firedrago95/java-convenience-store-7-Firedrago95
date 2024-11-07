@@ -10,6 +10,7 @@ public class InputValidator {
     private static final String ORDER_REGEX = "\\[[가-힣]+-\\d+\\](,\\[[가-힣]+-\\d+\\])*";
     private static final String ORDER_COUNT_REGEX = "\\d+";
     private static final String ORDER_NAME_REGEX = "[가-힣]+";
+    private static final String YES_NO_REGEX = "Y|N";
 
     public static void validateOrder(String input) {
         checkEmpty(input);
@@ -50,6 +51,17 @@ public class InputValidator {
             if (count == 0) {
                 throw new IllegalArgumentException("[ERROR] 0개를 주문 할 수 없습니다.");
             }
+        }
+    }
+
+    public static void validateYesOrNo(String input) {
+        checkEmpty(input);
+        checkYesOrNo(input);
+    }
+
+    private static void checkYesOrNo(String input) {
+        if (!input.matches(YES_NO_REGEX)) {
+            throw new IllegalArgumentException("[ERROR] Y 또는 N만 입력해주세요");
         }
     }
 }
