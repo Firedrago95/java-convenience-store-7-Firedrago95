@@ -40,4 +40,28 @@ class ProductTest {
         assertTrue(hasPromotion);
         assertFalse(notPromotion);
     }
+
+    @Test
+    void 재고보다_적은_수량_감소_테스트() {
+        // given
+        Product product = new Product("콜라", 1000, 10, null);
+
+        // when
+        product.decreaseQuantity(9);
+
+        // then
+        assertEquals(product.getQuantity(), 1);
+    }
+
+    @Test
+    void 재고보다_많은_수량_감소_테스트() {
+        // given
+        Product product = new Product("콜라", 1000, 10, null);
+
+        // when
+        product.decreaseQuantity(11);
+
+        // then
+        assertEquals(product.getQuantity(), 0);
+    }
 }
