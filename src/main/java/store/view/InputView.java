@@ -38,6 +38,10 @@ public class InputView {
         return checkYesOrNo();
     }
 
+    public static boolean askForRepurchase() {
+        System.out.println(RE_PURCHASE_MESSAGE);
+        return checkYesOrNo();
+    }
 
     private static boolean checkYesOrNo() {
         String input = Console.readLine();
