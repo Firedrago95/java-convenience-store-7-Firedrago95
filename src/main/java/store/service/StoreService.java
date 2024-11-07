@@ -6,12 +6,14 @@ import java.util.Map;
 import store.domain.Order;
 import store.domain.Product;
 import store.domain.Products;
+import store.domain.ReceiptPrinter;
 import store.util.FileConverter;
 
 public class StoreService {
 
     private Products products;
     private Order order;
+    private ReceiptPrinter printer;
 
     public void createProducts() {
         FileConverter.readPromotionsFile();
@@ -49,5 +51,10 @@ public class StoreService {
 
     public void changeQuantity() {
         products.changeQuantity(order.getOrder());
+    }
+
+    public String makeReceipt(boolean askForMemberShip) {
+        printer = new ReceiptPrinter(order.getOrder(), products.getProducts(), askForMemberShip);
+        return printer.makeReceipt();
     }
 }

@@ -44,7 +44,7 @@ public class Products {
     }
 
     public List<Product> getProducts() {
-        return Collections.unmodifiableList(products);
+        return products;
     }
 
     public List<Product> findAvailableProduct(Set<String> orderNames, LocalDateTime now) {
@@ -64,7 +64,7 @@ public class Products {
             int decrease = order.get(name);
             List<Product> filteredProducts = countProduct(name);
             if (oneSizeProductChangeQuantity(decrease, filteredProducts)) {
-                return;
+                continue;
             }
             twoSizeProductsChangeQuantity(decrease, filteredProducts);
         }

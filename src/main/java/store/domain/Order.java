@@ -86,6 +86,6 @@ public class Order {
     }
 
     public Map<String, Integer> getOrder() {
-        return Collections.unmodifiableMap(order);
+        return order;
     }
 }

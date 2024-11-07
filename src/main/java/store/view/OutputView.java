@@ -10,4 +10,8 @@ public class OutputView {
     }
 
     public static void printProducts(String products) { System.out.println(products); }
+
+    public static void printReceipt(String receipt) {
+        System.out.println(receipt);
+    }
 }
