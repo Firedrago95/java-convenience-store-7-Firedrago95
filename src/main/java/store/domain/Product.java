@@ -20,16 +20,22 @@ public class Product {
 
     @Override
     public String toString() {
-        String convertedPromotion = "";
-        if (promotion != null) {
-            convertedPromotion = promotion.getName();
-        }
+        return String.format("- %s %s원 %s%s%n",
+            name, formatNumber(price), getQuantityText(), getPromotionText());
+    }
+
+    private String getQuantityText() {
         if (quantity == 0) {
-            return String.format("- %s %s원 재고 없음 %s%n",
-                name, formatNumber(price), convertedPromotion);
+            return "재고 없음 ";
         }
-        return String.format("- %s %s원 %d개 %s%n", name, formatNumber(price),
-            quantity, convertedPromotion);
+        return quantity + "개 ";
+    }
+
+    private String getPromotionText() {
+        if (promotion != null) {
+            return promotion.getName();
+        }
+        return "";
     }
 
     public boolean hasPromotion() {
@@ -38,6 +44,10 @@ public class Product {
 
     public boolean isPromotionTime(LocalDateTime time) {
         return promotion.isPromotionTime(time);
+    }
+
+    public void decreaseQuantity(Integer count) {
+        this.quantity = Math.max(quantity - count, 0);
     }
 
     public String getName() {
@@ -58,9 +68,5 @@ public class Product {
 
     public int getPromotionGet() {
         return promotion.getGet();
-    }
-
-    public void decreaseQuantity(Integer count) {
-        this.quantity = Math.max(quantity - count, 0);
     }
 }

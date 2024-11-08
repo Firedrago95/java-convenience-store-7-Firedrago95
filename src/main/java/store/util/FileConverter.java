@@ -92,9 +92,8 @@ public class FileConverter {
     }
 
     private Promotion findPromotion(String[] parts) {
-        Promotion promotion;
         String PromotionName = parts[3].trim();
-        promotion = promotions.stream()
+        Promotion promotion = promotions.stream()
             .filter(promotion1 -> promotion1.getName().equals(PromotionName))
             .findFirst()
             .get();
