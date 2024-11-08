@@ -33,7 +33,7 @@ public class Order {
         int count = order.get(orderName);
         boolean isEligibleForPromotion = products.stream()
             .anyMatch(product -> product.getName().equals(orderName)
-                && count + 1 <= product.getQuantity()
+                && count < product.getQuantity()
                 && count % (product.getPromotionBuy() + product.getPromotionGet())
                     == product.getPromotionBuy());
         if (isEligibleForPromotion) {
