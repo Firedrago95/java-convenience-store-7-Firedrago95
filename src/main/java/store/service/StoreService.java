@@ -16,9 +16,9 @@ public class StoreService {
     private ReceiptPrinter printer;
 
     public void createProducts() {
-        FileConverter.readPromotionsFile();
-        List<Product> convertedProducts = FileConverter.readProductsFile();
-        products = new Products(convertedProducts);
+        FileConverter fileConverter = new FileConverter();
+        fileConverter.readPromotionsFile();
+        products = new Products(fileConverter.readProductsFile());
     }
 
     public String makeProductsStatus() {
