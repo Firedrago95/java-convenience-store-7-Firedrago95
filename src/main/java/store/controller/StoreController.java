@@ -14,46 +14,23 @@ public class StoreController {
 
     public void run() {
         boolean reBuy = true;
-        service.createProducts();
+        restock();
         while (reBuy) {
-            OutputView.printWelcome();
-
-            OutputView.printProducts(service.makeProductsStatus());
+            welcomeCustomer();
             createOrder();
-
-            List<String> lessCountOrders = service.getLessCountOrders();
-            List<String> filteredLessCountOrders = new ArrayList<>();
-            for (String lessCountOrder : lessCountOrders) {
-                if (readAddCount(lessCountOrder)) {
-                    filteredLessCountOrders.add(lessCountOrder);
-                }
-            }
-            service.addCount(filteredLessCountOrders);
-
-            Map<String, Integer> exceedCountOrders = service.getExceedCountOrders();
-            Map<String, Integer> filteredExceedCountOrders = new HashMap<>();
-            for (String name : exceedCountOrders.keySet()) {
-                if (!readSubtractCount(name, exceedCountOrders.get(name))) {
-                    filteredExceedCountOrders.put(name, exceedCountOrders.get(name));
-                }
-            }
-            service.substractCount(filteredExceedCountOrders);
-
-
-            String receipt = service.makeReceipt(isAskForMemberShip());
-            OutputView.printReceipt(receipt);
-            service.changeQuantity();
+            applyPromotion();
+            processCheckout();
             reBuy = askForRepurchase();
         }
     }
 
-    private static boolean askForRepurchase() {
-        try {
-            return InputView.askForRepurchase();
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return askForRepurchase();
-        }
+    private void restock() {
+        service.createProducts();
+    }
+
+    private void welcomeCustomer() {
+        OutputView.printWelcome();
+        OutputView.printProducts(service.makeProductsStatus());
     }
 
     private void createOrder() {
@@ -62,6 +39,48 @@ public class StoreController {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             createOrder();
+        }
+    }
+
+    private void applyPromotion() {
+        applyAdditionalCountToLowStockOrders();
+        applyReductionsToExcessStockOrders();
+    }
+
+    private void applyAdditionalCountToLowStockOrders() {
+        List<String> lessCountOrders = service.getLessCountOrders();
+        List<String> filteredLessCountOrders = new ArrayList<>();
+        for (String lessCountOrder : lessCountOrders) {
+            if (readAddCount(lessCountOrder)) {
+                filteredLessCountOrders.add(lessCountOrder);
+            }
+        }
+        service.addCount(filteredLessCountOrders);
+    }
+
+    private void applyReductionsToExcessStockOrders() {
+        Map<String, Integer> exceedCountOrders = service.getExceedCountOrders();
+        Map<String, Integer> filteredExceedCountOrders = new HashMap<>();
+        for (String name : exceedCountOrders.keySet()) {
+            if (!readSubtractCount(name, exceedCountOrders.get(name))) {
+                filteredExceedCountOrders.put(name, exceedCountOrders.get(name));
+            }
+        }
+        service.substractCount(filteredExceedCountOrders);
+    }
+
+    private void processCheckout() {
+        String receipt = service.makeReceipt(isAskForMemberShip());
+        OutputView.printReceipt(receipt);
+        service.changeQuantity();
+    }
+
+    private static boolean askForRepurchase() {
+        try {
+            return InputView.askForRepurchase();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return askForRepurchase();
         }
     }
 
